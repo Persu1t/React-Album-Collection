@@ -1,3 +1,5 @@
+project live link : https://quiet-alfajores-2aac81.netlify.app
+
 # Getting Started with Create React App and Redux
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), BootStrap 5 and react-tostify.
