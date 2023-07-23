@@ -8,12 +8,16 @@ const User = () => {
   const { userId } = useParams(); // Access the specific 'id' value from 'useParams'
   console.log(userId);
 
+  // showing the useralbum state
   const [userAlbums, setUserAlbums] = useState([]);
+  // post state
   const [post, setPost] = useState("");
+  // id of the album that needs to be updated
   const [idOfUpdatedPost, setIdOfUpdatedPost] = useState(null);
+  // state to tell weathr the id should be updated or not
   const [isPostUpdated, setIsPostUpdated] = useState(false);
+  // loading state
   const [loading, setLoading] = useState(true)
-  // const [updatedPost, setUpdatedPost] = useState("")
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`)
@@ -28,6 +32,11 @@ const User = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (post.trim() === "") {
+      // If the post is empty or contains only whitespace characters
+      return;
+    }
+    // making a post request
     fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`, {
       method: "POST",
       body: JSON.stringify({
@@ -49,9 +58,10 @@ const User = () => {
   const updateClick = (id, title) => {
     setIsPostUpdated(true);
     setIdOfUpdatedPost(id);
-    // setUpdatedPost(title)
     setPost(title);
   };
+
+  // making the put request
   const editPost = (e, id) => {
     e.preventDefault();
     fetch(`https://jsonplaceholder.typicode.com/albums?id=${id}`, {
@@ -84,6 +94,7 @@ const User = () => {
         toast.success(`Album updated successfully at ${id}`)
       });
   };
+  // making delete request
   const deleteAlbum = (id) => {
     fetch(`https://jsonplaceholder.typicode.com/albums?id=${id}`, {
       method: "DELETE",
@@ -103,6 +114,7 @@ const User = () => {
       <div className={styles.formContainer}>
         <form
           className="row g-3"
+          // showing the edit or post button on the return value of isPostUpdated
           onSubmit={
             isPostUpdated ? (e) => editPost(e, idOfUpdatedPost) : handleSubmit
           }
@@ -118,6 +130,7 @@ const User = () => {
               placeholder="Make a post"
               value={post}
               onChange={(e) => setPost(e.target.value)}
+              required
             />
           </div>
           <div className="col-auto">
